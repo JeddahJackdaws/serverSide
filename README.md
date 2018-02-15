@@ -15,11 +15,18 @@ in order to run the project you will need the following
 
 
 ## Running the project
-to run the project follow these instructions 
+to run the project follow these instructions,
+
+First navigate to the files directory then:
+```
+npm install
+```
+
+After that
 
 ### Casperjs files
 
-for casperjs files navigate to the files directory then type:
+for casperjs files type:
 ```
 casperjs bupa_scraper.js
 casperjs erfan_scraper.js
@@ -30,7 +37,7 @@ casperjs webteb_scraper.js
 
 ### Nodejs files
 
-for nodejs files navigate to the files directory then type:
+for nodejs files type:
 
 ```
 set API_KEY= YOUR KEY!
