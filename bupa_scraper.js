@@ -31,20 +31,20 @@ casper.start('http://www.bupa.com.sa/arabic/bupaforbusiness/bupacorporate/pages/
 var result = [];
 for (var index = 0; index < 2; index++) {
     // scrape data
-    // casper.then(function() {
-    console.log("scraping...");
-    itemsList.hospital = casper.evaluate(getHospital);
-    for (i = 5; i < 104; i++) {
-        result.push({
-            name: itemsList.hospital[i],
-            street: itemsList.hospital[i + 1],
-            area: itemsList.hospital[i + 4],
-            phone: itemsList.hospital[i + 3]
-        });
-        i += 4;
-    }
-    clickNext();
-    // });
+    casper.then(function() {
+        console.log("scraping...");
+        itemsList.hospital = casper.evaluate(getHospital);
+        for (i = 5; i < 104; i++) {
+            result.push({
+                name: itemsList.hospital[i],
+                street: itemsList.hospital[i + 1],
+                area: itemsList.hospital[i + 4],
+                phone: itemsList.hospital[i + 3]
+            });
+            i += 4;
+        }
+        clickNext();
+    });
 }
 casper.then(function() {
     fs.write('./bupa_result.json', JSON.stringify(result), 'w');
