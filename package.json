@@ -1,0 +1,11 @@
+{
+  "name": "betterdoctor",
+  "version": "1.0.0",
+  "description": "serverside scrapers for betterdoctor",
+  "main": "bupa_scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jeddahJackdaws",
+  "license": "ISC"
+}
