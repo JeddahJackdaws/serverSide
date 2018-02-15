@@ -1,11 +1,16 @@
 {
-  "name": "betterdoctor",
-  "version": "1.0.0",
-  "description": "serverside scrapers for betterdoctor",
-  "main": "bupa_scraper.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "jeddahJackdaws",
-  "license": "ISC"
+    "name": "betterdoctor",
+    "version": "1.0.0",
+    "description": "serverside scrapers for betterdoctor",
+    "main": "bupa_scraper.js",
+    "dependencies": {
+        "casperjs": "^1.1.4",
+        "jquery": "^3.3.1",
+        "lodash": "^4.17.5"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "jeddahJackdaws",
+    "license": "ISC"
 }
