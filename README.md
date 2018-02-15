@@ -10,8 +10,8 @@ Follow these instructions to setup the project and run it on your local machine.
 
 in order to run the project you will need the following
 ```
-* [Nodejs](https://nodejs.org/en/download/) - To run the files
-* [Casperjs](http://casperjs.org/) - To run the files
+[Nodejs](https://nodejs.org/en/download/) - To run the files
+[Casperjs](http://casperjs.org/) - To run the files
 ```
 
 ## Running the project
