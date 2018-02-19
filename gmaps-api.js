@@ -14,7 +14,7 @@ for (var key = 0; key < 3; key++) {
         var location = latitude[index] + ',' + longitude[index];
         var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
             location + '&rankby=distance' + '&type=' + type + '&keyword=' + keyword[key] + '&key=' + API_KEY;
-        console.log(url);
+        console.log("searching city: " + index + " with key:" + key);
         request(url, {
             json: true
         }, function(err, res, body) {
@@ -22,14 +22,29 @@ for (var key = 0; key < 3; key++) {
                 console.log(err);
                 return;
             }
-            data.push(body);
-            fs.appendFile("./gmaps_result.json", JSON.stringify(data), 'utf8', function(err) {
-                if (err) {
-                    return console.log(err);
-                }
-                console.log("data was saved!");
-            });
+            writer(body);
         });
     }
 
+}
+
+function writer(body) {
+    for (var index = 0; index < body.results.length; index++) {
+        var totalReviews1 = 0;
+        var provence1 = "";
+        if (body.results[index].reviews !== undefined) { totalReviews1 = body.results[index].reviews.length; }
+        if (body.results[index].address_components !== undefined) { provence1 = body.results[index].address_components[2].long_name; }
+        data.push({
+            name: body.results[index].name,
+            Id: body.results[index].place_id,
+            city: body.results[index].vicinity,
+            location: body.results[index].geometry.location,
+            rating: body.results[index].rating,
+            totalReviews: totalReviews1,
+            datefound: Date.now(),
+            provence: provence1
+        })
+    }
+    console.log("writing " + data.length + " results")
+    fs.writeFileSync("./gmaps_result.json", JSON.stringify(data), 'utf8');
 }
