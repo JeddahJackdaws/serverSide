@@ -41,5 +41,5 @@ for nodejs files type:
 
 ```
 set API_KEY= YOUR KEY!
-nodejs gmaps-api.js
+node gmaps-api.js
 ```
