@@ -25,9 +25,30 @@ app.get('/doctors', function(req, res) {
         res.send(results)
     })
 })
+
+app.get('/doctors/name/:name', function(req, res) {
+    console.log(req.params.name)
+    jdb.getDocN(db, req.params.name, function(err, results) {
+        if (err) {
+            res.status(500).send({ error: 'Oops something failed!' })
+        }
+        res.send(results)
+    })
+})
+
 app.get('/hospitals', function(req, res) {
     console.log(req.query)
     jdb.getH(db, req.query, function(err, results) {
+        if (err) {
+            res.status(500).send({ error: 'Oops something failed!' })
+        }
+        res.send(results)
+    })
+})
+
+app.get('/hospitals/name/:name', function(req, res) {
+    console.log(req.params.name)
+    jdb.getHN(db, req.params.name, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
         }
