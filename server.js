@@ -1,4 +1,5 @@
 const express = require('express')
+var cors = require('cors')
 const app = express()
 const MongoClient = require('mongodb').MongoClient;
 var port = process.env.PORT || 3000;
@@ -16,6 +17,8 @@ MongoClient.connect(url, (err, client) => {
     })
 })
 
+app.use(cors())
+
 app.get('/doctors', function(req, res) {
     console.log(req.query)
     getDoc(db, req.query, function(err, results) {
@@ -29,6 +32,16 @@ app.get('/doctors', function(req, res) {
 app.get('/doctors/name/:name', function(req, res) {
     console.log(req.params.name)
     getDocN(db, req.params.name, function(err, results) {
+        if (err) {
+            res.status(500).send({ error: 'Oops something failed!' })
+        }
+        res.send(results)
+    })
+})
+
+app.get('/doctors/id/:id', function(req, res) {
+    console.log(req.params.id)
+    getDocID(db, req.params.id, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
         }
@@ -66,6 +79,16 @@ app.get('/hospitals/name/:name', function(req, res) {
     })
 })
 
+app.get('/search/:name/:city', function(req, res) {
+    console.log(req.params.name)
+    console.log(req.params.city)
+    search(db, req.params.name, req.params.city, function(err, results) {
+        if (err) {
+            res.status(500).send({ error: 'Oops something failed!' })
+        }
+        res.send(results)
+    })
+})
 
 
 function getDoc(db, searchTerm, callback) {
@@ -77,6 +100,13 @@ function getDoc(db, searchTerm, callback) {
 
 function getDocN(db, searchTerm, callback) {
     db.collection(collectionName1).find({ name: new RegExp(searchTerm) }).toArray(function(err, docs) {
+        if (err) { callback(err, null) }
+        callback(null, docs);
+    })
+}
+
+function getDocID(db, searchTerm, callback) {
+    db.collection(collectionName1).find({ id: searchTerm }).toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
@@ -98,6 +128,13 @@ function getH(db, searchTerm, callback) {
 
 function getHN(db, searchTerm, callback) {
     db.collection(collectionName2).find({ name: new RegExp(searchTerm) }).toArray(function(err, docs) {
+        if (err) { callback(err, null) }
+        callback(null, docs);
+    })
+}
+
+function search(db, searchTerm, cityVar, callback) {
+    db.collection(collectionName1).find({ name: new RegExp(searchTerm) }).toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
