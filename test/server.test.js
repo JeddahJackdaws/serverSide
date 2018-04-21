@@ -1,9 +1,12 @@
 var request = require('supertest');
-
+var app = require('../server');
 describe("express server testing", function() {
-    var app;
+
     beforeEach(function() {
-        app = require('../server');
+        app.listen(3000);
+    });
+    afterEach(function() {
+        app.close();
     });
     it('welcomes the user successfully', function(done) {
         request(app).get('/')
