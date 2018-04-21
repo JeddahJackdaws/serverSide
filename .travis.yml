@@ -9,5 +9,5 @@ script:
   - casperjs webteb_scraper.js
   - set API_KEY=AIzaSyDwuqhi-51gdLpnq7vfYqT71Q9wLfdw0sk
   - node gmapAPI.js
-  - node gmaps-reviews.js
+  - node gmapsReviews.js
   - npm test
