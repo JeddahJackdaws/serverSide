@@ -40,6 +40,7 @@ for (var pages = 1; pages < 38; pages++) {
         for (i = 0; i < itemsList.names.length; i++) {
             result.push({
                 name: itemsList.names[i],
+                id: 0,
                 speciality: itemsList.specialities[i + x] + ',' + itemsList.specialities[i + x + 1],
                 hospital: 'Dr. Soliman Fakeeh Hospital',
                 rank: '',

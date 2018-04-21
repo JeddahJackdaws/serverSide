@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser');
 const app = express()
 const MongoClient = require('mongodb').MongoClient;
 const port = process.env.PORT || 3000;
@@ -8,7 +9,8 @@ const dbName = 'jackdaws'
 const collectionName1 = 'D';
 const collectionName2 = 'H';
 const collectionName3 = 'C';
-var db
+var db;
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 MongoClient.connect(url, (err, client) => {
     if (err) return console.log(err)
@@ -17,11 +19,11 @@ MongoClient.connect(url, (err, client) => {
         console.log('listening on ' + port)
     })
 })
-
 app.use(cors())
 
+app.get('/', (req, res) => res.send('Wellcome to BetterDoctor API'))
+
 app.get('/doctors', function(req, res) {
-    console.log(req.query)
     getDoc(db, req.query, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -31,7 +33,6 @@ app.get('/doctors', function(req, res) {
 })
 
 app.get('/doctors/name/:name', function(req, res) {
-    console.log(req.params.name)
     getDocN(db, req.params.name, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -41,7 +42,6 @@ app.get('/doctors/name/:name', function(req, res) {
 })
 
 app.get('/comments/mid/:mid', function(req, res) {
-    console.log(req.params.mid)
     commentSearch(db, req.params.mid, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -51,7 +51,6 @@ app.get('/comments/mid/:mid', function(req, res) {
 })
 
 app.get('/doctors/id/:id', function(req, res) {
-    console.log(req.params.id)
     getDocID(db, req.params.id, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -61,7 +60,6 @@ app.get('/doctors/id/:id', function(req, res) {
 })
 
 app.get('/doctors/spec/:speciality', function(req, res) {
-    console.log(req.params.speciality)
     getDocS(db, req.params.speciality, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -71,7 +69,6 @@ app.get('/doctors/spec/:speciality', function(req, res) {
 })
 
 app.get('/hospitals', function(req, res) {
-    console.log(req.query)
     getH(db, req.query, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -81,7 +78,6 @@ app.get('/hospitals', function(req, res) {
 })
 
 app.get('/hospitals/id/:id', function(req, res) {
-    console.log(req.params.id)
     getHId(db, req.params.id, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -91,7 +87,6 @@ app.get('/hospitals/id/:id', function(req, res) {
 })
 
 app.get('/hospitals/city/:city', function(req, res) {
-    console.log(req.params.city)
     getHCity(db, req.params.city, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
@@ -101,14 +96,27 @@ app.get('/hospitals/city/:city', function(req, res) {
 })
 
 app.get('/search/:name/:city', function(req, res) {
-    console.log(req.params.name)
-    console.log(req.params.city)
     search(db, req.params.name, req.params.city, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
         }
         res.send(results)
     })
+})
+
+app.post('/comments/new', urlencodedParser, function(req, res) {
+    if (!req.body) return res.sendStatus(400)
+    var review = {
+        reviewerId: req.body.reviewerId,
+        medicalId: req.body.medicalId,
+        reviewerName: req.body.reviewerName,
+        reviewDate: new Date().getTime(),
+        reviewText: req.body.reviewText
+    };
+    db.collection(collectionName3).insertOne(review, function(err, result) {
+        console.log("inserted");
+    });
+    res.send('thanks for the review, ' + req.body.reviewerName)
 })
 
 function getDoc(db, searchTerm, callback) {
@@ -161,8 +169,8 @@ function getHCity(db, searchTerm, callback) {
 }
 
 function search(db, searchTerm, cityVar, callback) {
-    var txt1 = '$search: "' + searchTerm + '"';
-    var txt2 = 'city: "' + cityVar + '"';
+    var txt1 = '$search: \'' + searchTerm + '\'';
+    var txt2 = 'city: \'' + cityVar + '\'';
     var full = '{ $text: { ' + txt1 + ' }, ' + txt2 + ' }';
     db.collection(collectionName1).find(full).toArray(function(err, docs) {
         if (err) { callback(err, null) }
@@ -176,3 +184,5 @@ function commentSearch(db, searchTerm, callback) {
         callback(null, docs);
     })
 }
+
+module.exports = app

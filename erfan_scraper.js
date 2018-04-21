@@ -39,6 +39,7 @@ casper.then(function() {
     for (i = 0; i < itemsList.names.length; i++) {
         result.push({
             name: itemsList.names[i],
+            id: 0,
             speciality: itemsList.specialities[i],
             hospital: 'Dr. Erfan & Bagedo general hospital',
             rank: '',
