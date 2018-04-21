@@ -5,9 +5,6 @@ describe("express server testing", function() {
     beforeEach(function() {
         app.listen(3000);
     });
-    afterEach(function() {
-        app.close();
-    });
     it('welcomes the user successfully', function(done) {
         request(app).get('/')
             .expect(200)
