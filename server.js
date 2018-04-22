@@ -24,7 +24,7 @@ app.use(cors())
 app.get('/', (req, res) => res.send('Wellcome to BetterDoctor API'))
 
 app.get('/doctors', function(req, res) {
-    getDoc(db, req.query, function(err, results) {
+    getDoc(db, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
         }
@@ -69,7 +69,7 @@ app.get('/doctors/spec/:speciality', function(req, res) {
 })
 
 app.get('/hospitals', function(req, res) {
-    getH(db, req.query, function(err, results) {
+    getH(db, function(err, results) {
         if (err) {
             res.status(500).send({ error: 'Oops something failed!' })
         }
@@ -119,15 +119,15 @@ app.post('/comments/new', urlencodedParser, function(req, res) {
     res.send('thanks for the review, ' + req.body.reviewerName)
 })
 
-function getDoc(db, searchTerm, callback) {
-    db.collection(collectionName1).find(searchTerm).toArray(function(err, docs) {
+function getDoc(db, callback) {
+    db.collection(collectionName1).find().toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
 }
 
 function getDocN(db, searchTerm, callback) {
-    db.collection(collectionName1).find({ name: new RegExp(searchTerm) }).toArray(function(err, docs) {
+    db.collection(collectionName1).find({ name: new RegExp(searchTerm, 'i') }).toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
@@ -141,14 +141,14 @@ function getDocID(db, searchTerm, callback) {
 }
 
 function getDocS(db, searchTerm, callback) {
-    db.collection(collectionName1).find({ speciality: new RegExp(searchTerm) }).toArray(function(err, docs) {
+    db.collection(collectionName1).find({ speciality: new RegExp(searchTerm, 'i') }).toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
 }
 
-function getH(db, searchTerm, callback) {
-    db.collection(collectionName2).find(searchTerm).toArray(function(err, docs) {
+function getH(db, callback) {
+    db.collection(collectionName2).find().toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
@@ -162,7 +162,7 @@ function getHId(db, searchTerm, callback) {
 }
 
 function getHCity(db, searchTerm, callback) {
-    db.collection(collectionName2).find({ city: new RegExp(searchTerm) }).toArray(function(err, docs) {
+    db.collection(collectionName2).find({ city: new RegExp(searchTerm, 'i') }).toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
@@ -184,5 +184,4 @@ function commentSearch(db, searchTerm, callback) {
         callback(null, docs);
     })
 }
-
 module.exports = app
