@@ -1,5 +1,7 @@
 # BetterDoctor ServerSide
 
+[![Build Status](https://travis-ci.org/JeddahJackdaws/serverSide.svg?branch=master)](https://travis-ci.org/JeddahJackdaws/serverSide)
+
 this is the server side for betterDoctor project
 
 ## Getting Started

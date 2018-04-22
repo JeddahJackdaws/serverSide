@@ -8,10 +8,4 @@ describe("google maps testing", function() {
         assert.exists(resultFile, "resultFile exists");
 
     })
-    it("file gmaps_reviews.json Found", function() {
-
-        var resultFile = fs.readFileSync("./gmaps_reviews.json");
-        assert.exists(resultFile, "resultFile exists");
-
-    })
 });

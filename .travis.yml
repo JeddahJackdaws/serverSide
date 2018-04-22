@@ -10,4 +10,8 @@ script:
   - set API_KEY=AIzaSyDwuqhi-51gdLpnq7vfYqT71Q9wLfdw0sk
   - node gmapAPI.js
   - node gmapsReviews.js
+<<<<<<< HEAD
   - npm test
+=======
+  - npm test
+>>>>>>> 2b0a7a26325eacfa583d951f71d1de2d587275ed
