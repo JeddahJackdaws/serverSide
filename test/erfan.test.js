@@ -8,5 +8,10 @@ describe("erfan_scraper testing", function() {
         assert.exists(resultFile, "resultFile exists");
 
     })
+    it("file erfan_result.json is not empty", function() {
 
+        var resultFile = fs.readFileSync("./erfan_result.json");
+        assert.isNotEmpty(resultFile, "resultFile have data");
+
+    })
 });

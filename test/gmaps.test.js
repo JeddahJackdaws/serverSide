@@ -8,4 +8,10 @@ describe("google maps testing", function() {
         assert.exists(resultFile, "resultFile exists");
 
     })
+    it("file gmaps_result.json is not empty", function() {
+
+        var resultFile = fs.readFileSync("./gmaps_result.json");
+        assert.isNotEmpty(resultFile, "resultFile have data");
+
+    })
 });
