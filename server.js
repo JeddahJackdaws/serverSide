@@ -95,22 +95,13 @@ app.get('/hospitals/city/:city', function(req, res) {
     })
 })
 
-app.get('/search/:name/:city', function(req, res) {
-    search(db, req.params.name, req.params.city, function(err, results) {
-        if (err) {
-            res.status(500).send({ error: 'Oops something failed!' })
-        }
-        res.send(results)
-    })
-})
-
 app.post('/comments/new', urlencodedParser, function(req, res) {
     if (!req.body) return res.sendStatus(400)
     var review = {
         reviewerId: req.body.reviewerId,
         medicalId: req.body.medicalId,
         reviewerName: req.body.reviewerName,
-        reviewDate: new Date().getTime(),
+        reviewDate: Math.floor(new Date() / 1000),
         reviewText: req.body.reviewText
     };
     db.collection(collectionName3).insertOne(review, function(err, result) {
@@ -162,17 +153,7 @@ function getHId(db, searchTerm, callback) {
 }
 
 function getHCity(db, searchTerm, callback) {
-    db.collection(collectionName2).find({ city: new RegExp(searchTerm, 'i') }).toArray(function(err, docs) {
-        if (err) { callback(err, null) }
-        callback(null, docs);
-    })
-}
-
-function search(db, searchTerm, cityVar, callback) {
-    var txt1 = '$search: \'' + searchTerm + '\'';
-    var txt2 = 'city: \'' + cityVar + '\'';
-    var full = '{ $text: { ' + txt1 + ' }, ' + txt2 + ' }';
-    db.collection(collectionName1).find(full).toArray(function(err, docs) {
+    db.collection(collectionName2).find({ city: new RegExp(searchTerm, 'i') }).sort({ rating: -1 }).toArray(function(err, docs) {
         if (err) { callback(err, null) }
         callback(null, docs);
     })
